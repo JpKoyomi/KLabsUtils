@@ -32,11 +32,11 @@ namespace KLabs.Utils
 			return dirty;
 		}
 
-		public static Mesh DeleteMesh(this SkinnedMeshRenderer src, BoxCollider area)
+		public static Mesh DeleteMesh(this SkinnedMeshRenderer src, BoxCollider area, bool inverse = false)
 		{
 			var srcMesh = src.sharedMesh;
 
-			NarrowDownVertices(area, srcMesh.vertices, out var newVertices, out var newIndices);
+			NarrowDownVertices(area, srcMesh.vertices, out var newVertices, out var newIndices, inverse);
 
 			var dst = new MeshPrimitive(newVertices.Length);
 			var actions = SetupCopyAttributes(srcMesh, dst);
@@ -106,20 +106,22 @@ namespace KLabs.Utils
 				}
 				subMesh.indexStart -= shiftCount;
 				subMesh.indexCount -= badCount;
-				mesh.subMeshCount++;
+				mesh.subMeshCount = count + 1;
 				mesh.SetSubMesh(count++, subMesh);
 			}
 
 			return mesh;
 		}
 
-		private static void NarrowDownVertices(BoxCollider area, Vector3[] srcVertices, out Vector3[] dstVertices, out int[] dstIndices)
+		private static void NarrowDownVertices(BoxCollider area, Vector3[] srcVertices, out Vector3[] dstVertices, out int[] dstIndices, bool inverse)
 		{
 			var vertexList = new List<Vector3>(srcVertices.Length);
 			dstIndices = new int[srcVertices.Length];
+			System.Func<Vector3, Vector3, bool> compare = (v1, v2) => v1 == v2;
+			if (inverse) compare = (v1, v2) => v1 != v2;
 			for (int i = 0; i < dstIndices.Length; i++)
 			{
-				if (srcVertices[i] == area.ClosestPoint(srcVertices[i]))
+				if (compare(srcVertices[i], area.ClosestPoint(srcVertices[i])))
 				{
 					dstIndices[i] = vertexList.Count;
 					vertexList.Add(srcVertices[i]);
