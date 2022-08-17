@@ -49,6 +49,7 @@ namespace KLabs.Utils
 			}
 
 			var newTriangles = new List<int>(newVertices.Length);
+			var triangleFlags = new bool[srcMesh.triangles.Length];
 			for (int i = 0; i < srcMesh.triangles.Length; i += 3)
 			{
 				if (newIndices[srcMesh.triangles[i + 0]] != -1 &&
@@ -58,6 +59,9 @@ namespace KLabs.Utils
 					newTriangles.Add(newIndices[srcMesh.triangles[i + 0]]);
 					newTriangles.Add(newIndices[srcMesh.triangles[i + 1]]);
 					newTriangles.Add(newIndices[srcMesh.triangles[i + 2]]);
+					triangleFlags[i + 0] = true;
+					triangleFlags[i + 1] = true;
+					triangleFlags[i + 2] = true;
 				}
 			}
 
@@ -77,8 +81,34 @@ namespace KLabs.Utils
 
 			NarrowDownCopyBlendShapes(srcMesh, mesh, newIndices);
 
-
 			mesh.SetTriangles(newTriangles, 0);
+
+			for (int i = 0, count = 0; i < srcMesh.subMeshCount; i++)
+			{
+				var subMesh = srcMesh.GetSubMesh(i);
+				var shiftCount = 0;
+				var badCount = 0;
+
+				foreach (var item in triangleFlags.Skip(subMesh.indexStart).Take(subMesh.indexCount))
+				{
+					badCount += item ? 0 : 1;
+				}
+				if (subMesh.indexCount == badCount)
+				{
+					continue;
+				}
+				for (int j = 0; j < subMesh.indexStart; j++)
+				{
+					if (!triangleFlags[j])
+					{
+						shiftCount++;
+					}
+				}
+				subMesh.indexStart -= shiftCount;
+				subMesh.indexCount -= badCount;
+				mesh.subMeshCount++;
+				mesh.SetSubMesh(count++, subMesh);
+			}
 
 			return mesh;
 		}
