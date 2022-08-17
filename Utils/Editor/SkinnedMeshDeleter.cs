@@ -25,11 +25,14 @@ namespace KLabs.Utils.Editor
 
 		public BoxCollider Area { get; set; }
 
+		public bool Inverse { get; set; }
+
 		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity message")]
 		private void OnGUI()
 		{
 			Source = EditorGUILayout.ObjectField("Source", Source, typeof(SkinnedMeshRenderer), true) as SkinnedMeshRenderer;
 			Area = EditorGUILayout.ObjectField("Area", Area, typeof(BoxCollider), true) as BoxCollider;
+			Inverse = EditorGUILayout.Toggle("Inverse", Inverse);
 			ScrollPosition = EditorGUILayout.BeginScrollView(ScrollPosition);
 			try
 			{
@@ -42,7 +45,7 @@ namespace KLabs.Utils.Editor
 						{
 							return;
 						}
-						var mesh = Source.DeleteMesh(Area);
+						var mesh = Source.DeleteMesh(Area, Inverse);
 						AssetDatabase.CreateAsset(mesh, path);
 						AssetDatabase.SaveAssets();
 						Undo.RecordObject(Source, "SkinnedMeshRenderer sharedMesh edit");
