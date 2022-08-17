@@ -1,0 +1,17 @@
+{
+    "name": "works.koyomi.klabs.utils",
+    "references": [
+        "GUID:a8f3a24007e396040b40d09202379e9f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
