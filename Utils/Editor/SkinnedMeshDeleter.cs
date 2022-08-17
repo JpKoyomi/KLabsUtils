@@ -38,7 +38,7 @@ namespace KLabs.Utils.Editor
 					if (GUILayout.Button("Delete"))
 					{
 						var path = EditorUtility.SaveFilePanelInProject("Save Mesh", Source.sharedMesh.name, "mesh", "Select save mesh path.");
-						if (path == null)
+						if (string.IsNullOrEmpty(path))
 						{
 							return;
 						}
