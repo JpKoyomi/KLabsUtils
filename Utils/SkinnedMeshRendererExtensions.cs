@@ -49,22 +49,7 @@ namespace KLabs.Utils
 			}
 
 			var newTriangles = new List<int>(newVertices.Length);
-			var triangleFlags = new bool[srcMesh.triangles.Length];
-			for (int i = 0; i < srcMesh.triangles.Length; i += 3)
-			{
-				if (newIndices[srcMesh.triangles[i + 0]] != -1 &&
-					newIndices[srcMesh.triangles[i + 1]] != -1 &&
-					newIndices[srcMesh.triangles[i + 2]] != -1)
-				{
-					newTriangles.Add(newIndices[srcMesh.triangles[i + 0]]);
-					newTriangles.Add(newIndices[srcMesh.triangles[i + 1]]);
-					newTriangles.Add(newIndices[srcMesh.triangles[i + 2]]);
-					triangleFlags[i + 0] = true;
-					triangleFlags[i + 1] = true;
-					triangleFlags[i + 2] = true;
-				}
-			}
-
+			NarrowDownTriangles(newIndices, srcMesh.triangles, newTriangles, out var triangleFlags);
 
 			var mesh = Object.Instantiate(srcMesh);
 			mesh.Clear(true);
@@ -77,7 +62,6 @@ namespace KLabs.Utils
 			{
 				if (dst.Uvs[i].Count == mesh.vertexCount) mesh.SetUVs(i, dst.Uvs[i]);
 			}
-
 
 			NarrowDownCopyBlendShapes(srcMesh, mesh, newIndices);
 
@@ -132,6 +116,41 @@ namespace KLabs.Utils
 				}
 			}
 			dstVertices = vertexList.ToArray();
+		}
+
+		private static void NarrowDownTriangles(int[] newIndices, int[] triangles, List<int> newTriangles, out bool[] triangleFlags)
+		{
+			var tempTriangles = new int[triangles.Length];
+			var flags = new bool[triangles.Length];
+			for (int i = 0; i < triangles.Length / 3; i++)
+			{
+				var a = triangles[i * 3 + 0];
+				var b = triangles[i * 3 + 1];
+				var c = triangles[i * 3 + 2];
+				if (newIndices[a] != -1 && newIndices[b] != -1 && newIndices[c] != -1)
+				{
+					tempTriangles[i * 3 + 0] = newIndices[a];
+					tempTriangles[i * 3 + 1] = newIndices[b];
+					tempTriangles[i * 3 + 2] = newIndices[c];
+					flags[i * 3 + 0] = true;
+					flags[i * 3 + 1] = true;
+					flags[i * 3 + 2] = true;
+				}
+				else
+				{
+					tempTriangles[i * 3 + 0] = -1;
+					tempTriangles[i * 3 + 1] = -1;
+					tempTriangles[i * 3 + 2] = -1;
+				}
+			}
+			for (int i = 0; i < tempTriangles.Length; i++)
+			{
+				if (tempTriangles[i] != -1)
+				{
+					newTriangles.Add(tempTriangles[i]);
+				}
+			}
+			triangleFlags = flags;
 		}
 
 		private static void NarrowDownCopyBlendShapes(Mesh src, Mesh dst, int[] directions)
