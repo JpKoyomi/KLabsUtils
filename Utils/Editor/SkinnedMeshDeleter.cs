@@ -45,11 +45,20 @@ namespace KLabs.Utils.Editor
 						{
 							return;
 						}
-						var mesh = Source.DeleteMesh(Area, Inverse);
-						AssetDatabase.CreateAsset(mesh, path);
-						AssetDatabase.SaveAssets();
-						Undo.RecordObject(Source, "SkinnedMeshRenderer sharedMesh edit");
-						Source.sharedMesh = mesh;
+						EditorUtility.DisplayProgressBar("Skinned Mesh Deleter", "Mesh deleting.", 0);
+						try
+						{
+							var mesh = Source.DeleteMesh(Area, Inverse);
+							EditorUtility.DisplayProgressBar("Skinned Mesh Deleter", "Mesh deleting.", 90);
+							AssetDatabase.CreateAsset(mesh, path);
+							AssetDatabase.SaveAssets();
+							Undo.RecordObject(Source, "SkinnedMeshRenderer sharedMesh edit");
+							Source.sharedMesh = mesh;
+						}
+						finally
+						{
+							EditorUtility.ClearProgressBar();
+						}
 					}
 				}
 			}
