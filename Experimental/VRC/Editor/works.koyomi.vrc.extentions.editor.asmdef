@@ -1,16 +1,19 @@
 {
-    "name": "works.koyomi.klabs.utils.editor",
-    "references": [],
+    "name": "works.koyomi.vrc.extentions.editor",
+    "references": [
+        "GUID:364bbb2b1bb2ca54892cd1125749b505"
+    ],
     "includePlatforms": [
-        "Editor",
-        "WindowsStandalone64"
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "VRC_SDK_VRCSDK3"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

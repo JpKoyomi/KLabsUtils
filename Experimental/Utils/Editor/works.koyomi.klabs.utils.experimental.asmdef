@@ -1,5 +1,5 @@
 {
-    "name": "works.koyomi.klabs.utils",
+    "name": "works.koyomi.klabs.utils.experimental.editor",
     "references": [
         "GUID:a8f3a24007e396040b40d09202379e9f"
     ],
