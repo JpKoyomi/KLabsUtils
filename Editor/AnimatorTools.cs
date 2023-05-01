@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEditor;
+using UnityEditor.Animations;
 
-namespace KLabs.Utils
+namespace KLabs.Utils.Editor
 {
 	public static class AnimatorTools
 	{
