@@ -1,0 +1,35 @@
+{
+    "name": "works.koyomi.klabs.utils.editor",
+    "references": [
+        "GUID:1ff6d844eacaa5e4197ead1b8eb9af9a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "Android",
+        "CloudRendering",
+        "Editor",
+        "GameCoreScarlett",
+        "GameCoreXboxOne",
+        "iOS",
+        "LinuxStandalone64",
+        "Lumin",
+        "macOSStandalone",
+        "PS4",
+        "PS5",
+        "Stadia",
+        "Switch",
+        "tvOS",
+        "WSA",
+        "WebGL",
+        "WindowsStandalone32",
+        "WindowsStandalone64",
+        "XboxOne"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
