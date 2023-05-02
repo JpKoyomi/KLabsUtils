@@ -1,7 +1,9 @@
 {
     "name": "works.koyomi.klabs.utils.editor",
     "references": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
